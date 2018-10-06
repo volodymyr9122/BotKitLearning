@@ -34,6 +34,10 @@ if (!process.env.verify_token) {
 }
 
 var Botkit = require('botkit');
+var mongoStorage = require('botkit-storage-mongo')({
+    mongoUri: `mongodb://${process.env.dbuser}:${process.env.dbpassword}@ds113003.mlab.com:13003/fbotlearning`,
+    tables: ['Users']
+});
 var debug = require('debug')('botkit:main');
 
 // Create the Botkit controller, which controls all instances of the bot.
@@ -43,6 +47,7 @@ var controller = Botkit.facebookbot({
     access_token: process.env.page_token,
     studio_token: process.env.studio_token,
     studio_command_uri: process.env.studio_command_uri,
+    storage: mongoStorage
 });
 
 // Set up an Express-powered webserver to expose oauth and webhook endpoints

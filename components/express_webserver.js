@@ -1,7 +1,30 @@
+//******SET UP MONGOOSE CONECTION
+//import the mongoose module
+const mongoose = require('mongoose');
+//set up default mongoose connection
+const mongoDB =`mongodb://${process.env.dbuser}:${process.env.dbpassword}@ds113003.mlab.com:13003/fbotlearning`;
+
+const mongooseOptions = {
+  useNewUrlParser: true
+};
+mongoose.connect(mongoDB,mongooseOptions);
+
+// On Connection
+mongoose.connection.on('connected', () => {
+  console.log('Connected to database '+mongoDB);
+});
+
+// On Error
+mongoose.connection.on('error', (err) => {
+  console.log('Database error: '+ err);
+});
+
+
 var express = require('express');
 var bodyParser = require('body-parser');
 var querystring = require('querystring');
 var debug = require('debug')('botkit:webserver');
+var localtunnel = require('localtunnel');
 
 module.exports = function(controller, bot) {
 
@@ -36,3 +59,17 @@ module.exports = function(controller, bot) {
     return webserver;
 
 }
+//localtunnel settings
+/*
+const tunnel = localtunnel(process.env.PORT, { subdomain: 'brown-rat-91' }, (err, tunnel) => {
+    if (err) console.log(err)
+
+    // the assigned public url for your tunnel
+    // i.e. https://abcdefgjhij.localtunnel.me
+    tunnel.url;
+});
+
+tunnel.on('close', function() {
+    // tunnels are closed
+});
+*/

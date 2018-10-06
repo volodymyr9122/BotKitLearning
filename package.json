@@ -4,19 +4,29 @@
   "description": "A starter kit for building a custom Facebook Messenger bot with Botkit Studio",
   "main": "bot.js",
   "scripts": {
-    "start": "node bot.js"
+    "start": "node bot.js",
+    "dev": "nodemon bot.js"
   },
   "dependencies": {
     "body-parser": "^1.15.2",
     "botkit": "^0.6.15",
+    "botkit-storage-mongo": "^1.0.7",
     "botkit-studio-metrics": "^0.0.1",
     "debug": "^2.6.0",
     "express": "^4.14.0",
+    "mongodb": "^3.1.6",
+    "mongoose": "^5.2.18",
+    "mongoose-unique-validator": "^2.0.2",
+    "mustache": "^3.0.0",
     "node-env-file": "^0.1.8",
-    "request": "^2.79.0",
+    "node-fetch": "^2.2.0",
+    "request": "^2.88.0",
     "wordfilter": "^0.2.6"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "log": "^1.4.0",
+    "nodemon": "^1.18.4"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/howdyai/botkit-starter-facebook.git"
