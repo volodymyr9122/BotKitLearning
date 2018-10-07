@@ -23,7 +23,7 @@ console.log(req.body)
 
     reference.save((err) => {
         if (!err) {
-            log.info("new reference was link created");
+            log.info("new reference  link was created");
             return res.send(reference);
         } else {
 
@@ -47,12 +47,13 @@ console.log(req.body)
 //Update user userRefUsed field in user
 exports.add_user_ref_used = ((req, res, next) => {
 
-  Reference.findOneAndUpdate({ref:req.body.ref}, {$set:{userRefUsed:req.body.id}}, {new: true},
-    function(err, doc){
+  Reference.findOneAndUpdate({ref:req.body.ref}, {userRefUsed:req.body.id}, {new: true},
+    function(err, reference){
      if(err){
         console.log("Something wrong when updating data!");
      }
-   console.log(doc);
+    log.info("refUsed  field was updated");
+    res.send(reference)
 });
 
 });
@@ -65,7 +66,7 @@ exports.find_user_ref_generated = ((req, res, next) => {
     .exec(function(err, reference) {
     if (err) throw err;
 
-    console.log(typeof reference.id);
+    log.info("ref link was generated");
     res.send(reference.id);
 });
 

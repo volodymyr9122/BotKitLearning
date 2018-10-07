@@ -35,6 +35,6 @@ module.exports = function(webserver, controller) {
 
   //  method used to
 webserver.post('/receive/add_user', reference_controller.add_user);
-webserver.post('/receive/add_user_ref_used', reference_controller.add_user_ref_used);
+webserver.put('/receive/add_user_ref_used', reference_controller.add_user_ref_used);
 webserver.get('/receive/find_user_ref_generated/:ref', reference_controller.find_user_ref_generated);
 }

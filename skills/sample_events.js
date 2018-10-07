@@ -200,7 +200,7 @@ module.exports = function (controller) {
 
 
         let options = {
-            method: 'POST',
+            method: 'PUT',
             url: 'http://localhost:8000/receive/add_user_ref_used',
             headers: {
                 'Cache-Control': 'no-cache',
