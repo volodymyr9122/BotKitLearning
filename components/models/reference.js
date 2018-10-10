@@ -7,7 +7,7 @@ const uniqueValidator = require('mongoose-unique-validator');
 const ReferenceSchema = new Schema({
     id: {type: String, required: true},
     userRefUsed: {type:String},
-    ref:{type: Number, unique: true},
+    ref:{type: Number},
     timestamp: { type: Date, default: Date.now() }
 });
 

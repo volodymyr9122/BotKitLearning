@@ -2,7 +2,7 @@
 //import the mongoose module
 const mongoose = require('mongoose');
 //set up default mongoose connection
-const mongoDB =`mongodb://${process.env.dbuser}:${process.env.dbpassword}@ds113003.mlab.com:13003/fbotlearning`;
+const mongoDB =`mongodb://${process.env.dbuser}:${process.env.dbpassword}@ds125693.mlab.com:25693/fbotlearning`;
 
 const mongooseOptions = {
   useNewUrlParser: true

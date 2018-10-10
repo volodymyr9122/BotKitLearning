@@ -1,5 +1,5 @@
 const refRandomGenerator = require('../components/controllers/refRandomGenerator'),
-    userController = require('../components/controllers/referenceController'),
+    //userController = require('../components/controllers/referenceController'),
     request = require("request"),
     fetch = require('node-fetch');
 
@@ -82,8 +82,18 @@ module.exports = function (controller) {
 
     });
 
-    controller.on('facebook_postback', function (bot, message) {
+    controller.on('facebook_postback', async (bot, message) =>{
         if (message.payload == 'sample_get_started_payload') {
+          try{
+            let response = await fetch(`https://graph.facebook.com/v2.11/${message.sender.id}?access_token=${process.env.page_token}&fields=first_name,last_name`)
+             let {first_name, last_name, id} = await response.json()
+            //console.log(first_name, last_name, userID)
+               addNewUserToDB (first_name, last_name, id)
+          }
+            catch(e){
+                console.log(e)
+         }
+
             bot.reply(message, {
                 "text": "Look up and enjoy!",
                 "quick_replies": [
@@ -119,7 +129,7 @@ module.exports = function (controller) {
     controller.on('message_received', async (bot, message) => {
         if (message.quick_reply.payload === 'invite_friend') {
             let ref = await refRandomGenerator.randomRef()
-            addNewUserToDB(message.user, ref)
+            addNewRefToDB(message.user, ref)
             bot.reply(message, {
                 "attachment": {
                     "type": "template",
@@ -171,11 +181,11 @@ module.exports = function (controller) {
     })
 
 
-    const addNewUserToDB = (id, ref) => {
+    const addNewRefToDB = (id, ref) => {
 
         let options = {
             method: 'POST',
-            url: 'http://localhost:8000/receive/add_user',
+            url: 'http://localhost:8000/receive/add_reference',
             headers: {
                 'Cache-Control': 'no-cache',
                 'Content-Type': 'application/json'
@@ -219,5 +229,32 @@ module.exports = function (controller) {
             console.log(body);
         });
     };
+
+     const addNewUserToDB = (first_name, last_name, userID) => {
+
+        let options = {
+            method: 'POST',
+            url: 'http://localhost:8000/receive/add_user',
+            headers: {
+                'Cache-Control': 'no-cache',
+                'Content-Type': 'application/json'
+            },
+            body: {
+                userID,
+                first_name,
+                last_name
+            },
+            json: true
+        };
+
+        request(options, function (error, response, body) {
+            if (error) throw new Error(error);
+
+            console.log(body);
+        });
+
+
+    };
+
 
 }

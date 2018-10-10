@@ -4,8 +4,8 @@ const Log = require('log'),
 
 
 
-// Add user
-exports.add_user = ((req, res, next) => {
+// Add reference
+exports.add_reference = ((req, res, next) => { //exports.add_user
 console.log(req.body)
 
     Reference.countDocuments({ref: req.body.ref}, function (err, count){
@@ -66,7 +66,7 @@ exports.find_user_ref_generated = ((req, res, next) => {
     .exec(function(err, reference) {
     if (err) throw err;
 
-    log.info("ref link was generated");
+    log.info("SenderID of ref link was found");
     res.send(reference.id);
 });
 
