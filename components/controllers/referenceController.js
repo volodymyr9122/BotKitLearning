@@ -5,7 +5,7 @@ const Log = require('log'),
 
 
 // Add reference
-exports.add_reference = ((req, res, next) => { //exports.add_user
+exports.add_reference = ((req, res, next) => {
 console.log(req.body)
 
     Reference.countDocuments({ref: req.body.ref}, function (err, count){

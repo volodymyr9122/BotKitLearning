@@ -1,5 +1,4 @@
 const refRandomGenerator = require('../components/controllers/refRandomGenerator'),
-    //userController = require('../components/controllers/referenceController'),
     request = require("request"),
     fetch = require('node-fetch');
 
@@ -33,7 +32,7 @@ module.exports = function (controller) {
         bot.reply(message, 'I heard that!!');
     });
 
-    /**	 * Handle facebook referal messenger event	 * Find all needed entities and send message to sender if founded	 */
+    /**	 * Handle facebook referal messenger event	 * Find all needed entities and send message to sender if founded	*/
 
     controller.on('facebook_referral', async (bot, message) => {
         try {
@@ -41,7 +40,7 @@ module.exports = function (controller) {
             let user = await resonse.json()
             //console.log('User sended ref link ' + user)
             bot.say({
-                text: 'Your referal link was used',
+                text: 'Your link is activated',
                 channel: user // a valid facebook user id or phone number
             })
         } catch (e) {
@@ -51,7 +50,7 @@ module.exports = function (controller) {
 
         addUserRefUsedToDB(message.referral.ref, message.user)
         bot.reply(message, {
-            "text": "Your link is activated",
+            "text": "Look up and enjoy. More",
             "quick_replies": [
                 {
                     "content_type": "text",
@@ -126,12 +125,12 @@ module.exports = function (controller) {
         }
     });
 
-    controller.on('message_received', async (bot, message) => {
-        if (message.quick_reply.payload === 'invite_friend') {
-            let ref = await refRandomGenerator.randomRef()
+ controller.on('message_received',  (bot, message) => {
+   if (message.quick_reply!==undefined) {
+      if (message.quick_reply.payload === 'invite_friend') {
+            let ref =  refRandomGenerator.randomRef()
             addNewRefToDB(message.user, ref)
-            bot.reply(message, {
-                "attachment": {
+           let attachment = {
                     "type": "template",
                     "payload": {
                         "template_type": "generic",
@@ -175,9 +174,11 @@ module.exports = function (controller) {
         ]
                     }
                 }
-            });
+        bot.reply(message, {
+                attachment:attachment
+                });
         }
-
+      }
     })
 
 
@@ -256,5 +257,43 @@ module.exports = function (controller) {
 
     };
 
+    const addNewMessageToDB = (sender, recipient, text) => {
+
+        let options = {
+            method: 'POST',
+            url: 'http://localhost:8000/receive/add_message',
+            headers: {
+                'Cache-Control': 'no-cache',
+                'Content-Type': 'application/json'
+            },
+            body: {
+                sender,
+                recipient,
+                text
+            },
+            json: true
+        };
+
+        request(options, function (error, response, body) {
+            if (error) throw new Error(error);
+
+            console.log(body);
+        });
+
+
+    };
 
 }
+
+
+
+ /*const greetNewUser = async (id) => {
+
+        bot.reply(message, "Look up and enjoy!")
+    }*/
+
+/*controller.hears('invite_friend', 'facebook_postback', function(bot, message) {
+       console.log('hahahsha')
+       bot.reply(message, 'Got it!');
+    })
+*/
