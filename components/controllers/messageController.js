@@ -11,7 +11,8 @@ console.log(req.body)
     let message = new Message({
         sender: req.body.sender,
         recipient: req.body.recipient,
-        text: req.body.text
+        text: req.body.text,
+        timestamp:Date.now()
     })
 
     message.save((err) => {

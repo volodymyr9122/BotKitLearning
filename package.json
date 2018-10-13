@@ -24,6 +24,7 @@
     "wordfilter": "^0.2.6"
   },
   "devDependencies": {
+    "eslint": "^5.7.0",
     "log": "^1.4.0",
     "nodemon": "^1.18.4"
   },

@@ -1,4 +1,6 @@
-const request = require("request");
+const request = require("request"),
+      env = require('node-env-file');
+
 
 module.exports = function(controller) {
 
@@ -32,7 +34,7 @@ module.exports = function(controller) {
      if(text !== undefined){
         let options = {
             method: 'POST',
-            url: 'http://localhost:8000/receive/add_message',
+            url: `${process.env.myLink}/receive/add_message`,
             headers: {
                 'Cache-Control': 'no-cache',
                 'Content-Type': 'application/json'

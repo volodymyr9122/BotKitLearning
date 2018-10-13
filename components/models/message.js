@@ -4,7 +4,8 @@ const Schema = mongoose.Schema;
 const MessageSchema = new Schema({
   sender:{type:String},
   recipient:{type:String},
-  text:{type:String}
+  text:{type:String},
+  timestamp: { type: Date, default: Date.now() }
 });
 
 //Initializing model

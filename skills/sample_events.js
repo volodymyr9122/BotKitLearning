@@ -1,6 +1,7 @@
 const refRandomGenerator = require('../components/controllers/refRandomGenerator'),
-    request = require("request"),
-    fetch = require('node-fetch');
+      answer = require('../partials/answer'),
+      request = require("request"),
+      fetch = require('node-fetch');
 
 module.exports = function (controller) {
 
@@ -36,7 +37,7 @@ module.exports = function (controller) {
 
     controller.on('facebook_referral', async (bot, message) => {
         try {
-            let resonse = await fetch(`http://localhost:8000/receive/find_user_ref_generated/${message.referral.ref}`);
+            let resonse = await fetch(`${process.env.myLink}/receive/find_user_ref_generated/${message.referral.ref}`);
             let user = await resonse.json()
             //console.log('User sended ref link ' + user)
             bot.say({
@@ -47,44 +48,16 @@ module.exports = function (controller) {
             console.log(e)
         }
 
+       addUserRefUsedToDB(message.referral.ref, message.user)
 
-        addUserRefUsedToDB(message.referral.ref, message.user)
-        bot.reply(message, {
-            "text": "Look up and enjoy. More",
-            "quick_replies": [
-                {
-                    "content_type": "text",
-                    "title": "My purchases",
-                    "payload": "<POSTBACK_PAYLOAD>",
-                    "image_url": "http://example.com/img/red.png"
-      },
-                {
-                    "content_type": "text",
-                    "title": "Shop",
-                    "payload": "<POSTBACK_PAYLOAD>",
-                    "image_url": "http://example.com/img/red.png"
-      },
-                {
-                    "content_type": "text",
-                    "title": "Favourites",
-                    "payload": "<POSTBACK_PAYLOAD>",
-                    "image_url": "http://example.com/img/red.png"
-      },
-                {
-                    "content_type": "text",
-                    "title": "To invite a friend",
-                    "payload": "invite_friend",
-                    "image_url": "http://example.com/img/red.png"
-      }
-     ]
-        });
+        bot.reply(message, answer.main_menu);
 
     });
 
     controller.on('facebook_postback', async (bot, message) =>{
         if (message.payload == 'sample_get_started_payload') {
           try{
-            let response = await fetch(`https://graph.facebook.com/v2.11/${message.sender.id}?access_token=${process.env.page_token}&fields=first_name,last_name`)
+            let response = await fetch(`https://graph.facebook.com/${message.sender.id}?access_token=${process.env.page_token}&fields=first_name,last_name`)
              let {first_name, last_name, id} = await response.json()
             //console.log(first_name, last_name, userID)
                addNewUserToDB (first_name, last_name, id)
@@ -93,35 +66,7 @@ module.exports = function (controller) {
                 console.log(e)
          }
 
-            bot.reply(message, {
-                "text": "Look up and enjoy!",
-                "quick_replies": [
-                    {
-                        "content_type": "text",
-                        "title": "My purchases",
-                        "payload": "<POSTBACK_PAYLOAD>",
-                        "image_url": "http://example.com/img/red.png"
-      },
-                    {
-                        "content_type": "text",
-                        "title": "Shop",
-                        "payload": "<POSTBACK_PAYLOAD>",
-                        "image_url": "http://example.com/img/red.png"
-      },
-                    {
-                        "content_type": "text",
-                        "title": "Favourites",
-                        "payload": "<POSTBACK_PAYLOAD>",
-                        "image_url": "http://example.com/img/red.png"
-      },
-                    {
-                        "content_type": "text",
-                        "title": "To invite a friend",
-                        "payload": "invite_friend",
-                        "image_url": "http://example.com/img/red.png"
-      }
-     ]
-            });
+            bot.reply(message, answer.main_menu);
         }
     });
 
@@ -176,7 +121,7 @@ module.exports = function (controller) {
                 }
         bot.reply(message, {
                 attachment:attachment
-                });
+            });
         }
       }
     })
@@ -186,7 +131,7 @@ module.exports = function (controller) {
 
         let options = {
             method: 'POST',
-            url: 'http://localhost:8000/receive/add_reference',
+            url: `${process.env.myLink}/receive/add_reference`,
             headers: {
                 'Cache-Control': 'no-cache',
                 'Content-Type': 'application/json'
@@ -212,7 +157,7 @@ module.exports = function (controller) {
 
         let options = {
             method: 'PUT',
-            url: 'http://localhost:8000/receive/add_user_ref_used',
+            url: `${process.env.myLink}/receive/add_user_ref_used`,
             headers: {
                 'Cache-Control': 'no-cache',
                 'Content-Type': 'application/json'
@@ -235,7 +180,7 @@ module.exports = function (controller) {
 
         let options = {
             method: 'POST',
-            url: 'http://localhost:8000/receive/add_user',
+            url: `${process.env.myLink}/receive/add_user`,
             headers: {
                 'Cache-Control': 'no-cache',
                 'Content-Type': 'application/json'
@@ -261,7 +206,7 @@ module.exports = function (controller) {
 
         let options = {
             method: 'POST',
-            url: 'http://localhost:8000/receive/add_message',
+            url: `${process.env.myLink}/receive/add_message`,
             headers: {
                 'Cache-Control': 'no-cache',
                 'Content-Type': 'application/json'
