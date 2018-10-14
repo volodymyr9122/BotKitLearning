@@ -8,10 +8,16 @@ In these examples, Botkit is configured to listen for certain phrases, and then
 respond immediately with a single line response.
 
 */
+const refRandomGenerator = require('../components/helpers/refRandomGenerator'),
+    httpHandlers = require('../components/helpers/httpHandlers'),
+    answer = require('../partials/answer'),
+    request = require("request"),
+    fetch = require('node-fetch');
+
 
 var wordfilter = require('wordfilter');
 
-module.exports = function(controller) {
+module.exports = function (controller) {
 
     /* Collect some very simple runtime stats for use in the uptime/debug command */
     var stats = {
@@ -19,18 +25,18 @@ module.exports = function(controller) {
         convos: 0,
     }
 
-    controller.on('heard_trigger', function() {
+    controller.on('heard_trigger', function () {
         stats.triggers++;
     });
 
-    controller.on('conversationStarted', function() {
+    controller.on('conversationStarted', function () {
         stats.convos++;
     });
 
 
-    controller.hears(['^uptime','^debug'], 'message_received', function(bot, message) {
+    controller.hears(['^uptime', '^debug'], 'message_received', function (bot, message) {
 
-        bot.createConversation(message, function(err, convo) {
+        bot.createConversation(message, function (err, convo) {
             if (!err) {
                 convo.setVar('uptime', formatUptime(process.uptime()));
                 convo.setVar('convos', stats.convos);
@@ -43,7 +49,7 @@ module.exports = function(controller) {
 
     });
 
-    controller.hears(['^say (.*)','^say'], 'message_received', function(bot, message) {
+    controller.hears(['^say (.*)', '^say'], 'message_received', function (bot, message) {
         if (message.match[1]) {
 
             if (!wordfilter.blacklisted(message.match[1])) {
@@ -55,7 +61,18 @@ module.exports = function(controller) {
             bot.reply(message, 'I will repeat whatever you say.')
         }
     });
+    //my app
+    controller.hears(['to invite a friend'], 'message_received', function (bot, message) {
+        let ref = refRandomGenerator.randomRef()
+        httpHandlers.addNewRefToDB(message.user, ref)
+        bot.reply(message, {
+            attachment: answer.shareInviteFriend(ref)
+        });
+    });
 
+    controller.hears(['main menu'], 'message_received', function (bot, message) {
+        bot.reply(message, answer.main_menu);
+    });
 
     /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
     /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */

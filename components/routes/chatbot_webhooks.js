@@ -12,6 +12,7 @@ webserver.put('/receive/add_user_ref_used', reference_controller.add_user_ref_us
 webserver.get('/receive/find_user_ref_generated/:ref', reference_controller.find_user_ref_generated);
   //  routes used for user schema
 webserver.post('/receive/add_user', user_controller.add_user);
+webserver.get('/receive/is_user_in_DB/:userID', user_controller.is_user_in_DB);
   //  routes used for message schema
 webserver.post('/receive/add_message', message_controller.add_message);
 }

@@ -1,6 +1,6 @@
-const refRandomGenerator = require('../components/controllers/refRandomGenerator'),
+const refRandomGenerator = require('../components/helpers/refRandomGenerator'),
+      httpHandlers = require('../components/helpers/httpHandlers'),
       answer = require('../partials/answer'),
-      request = require("request"),
       fetch = require('node-fetch');
 
 module.exports = function (controller) {
@@ -33,40 +33,45 @@ module.exports = function (controller) {
         bot.reply(message, 'I heard that!!');
     });
 
-    /**	 * Handle facebook referal messenger event	 * Find all needed entities and send message to sender if founded	*/
+
 
     controller.on('facebook_referral', async (bot, message) => {
         try {
-            let resonse = await fetch(`${process.env.myLink}/receive/find_user_ref_generated/${message.referral.ref}`);
-            let user = await resonse.json()
-            //console.log('User sended ref link ' + user)
+            let response = await fetch(`${process.env.myLink}/receive/find_user_ref_generated/${message.referral.ref}`);
+            let user = await response.json()
             bot.say({
                 text: 'Your link is activated',
-                channel: user // a valid facebook user id or phone number
+                channel: user
             })
         } catch (e) {
             console.log(e)
         }
-
-       addUserRefUsedToDB(message.referral.ref, message.user)
+     httpHandlers.addUserRefUsedToDB(message.referral.ref, message.user)
 
         bot.reply(message, answer.main_menu);
-
     });
 
     controller.on('facebook_postback', async (bot, message) =>{
         if (message.payload == 'sample_get_started_payload') {
           try{
-            let response = await fetch(`https://graph.facebook.com/${message.sender.id}?access_token=${process.env.page_token}&fields=first_name,last_name`)
-             let {first_name, last_name, id} = await response.json()
-            //console.log(first_name, last_name, userID)
-               addNewUserToDB (first_name, last_name, id)
-          }
+            let userReq = await fetch(`https://graph.facebook.com/${message.sender.id}?access_token=${process.env.page_token}&fields=first_name,last_name`)
+             let {first_name, last_name, id} = await userReq.json()
+
+             let ifNewUser = await fetch(`${process.env.myLink}/receive/is_user_in_DB/${parseInt(id)}`)
+             let resIfNewUser = await ifNewUser.json();
+
+            if(resIfNewUser === true ){
+                  bot.say({
+                  text: 'Look up and enjoy.More',
+                  channel: id
+                });
+                  httpHandlers.addNewUserToDB (first_name, last_name, id);
+                 }
+               }
             catch(e){
                 console.log(e)
          }
-
-            bot.reply(message, answer.main_menu);
+          bot.reply(message, answer.main_menu);
         }
     });
 
@@ -74,171 +79,12 @@ module.exports = function (controller) {
    if (message.quick_reply!==undefined) {
       if (message.quick_reply.payload === 'invite_friend') {
             let ref =  refRandomGenerator.randomRef()
-            addNewRefToDB(message.user, ref)
-           let attachment = {
-                    "type": "template",
-                    "payload": {
-                        "template_type": "generic",
-                        "elements": [
-                            {
-                                "title": "BotKit2 best shop you ever visited",
-                                "subtitle": "Best products for low prices.",
-                                "image_url": "https://scontent-waw1-1.xx.fbcdn.net/v/t1.0-1/p200x200/42229935_313826186086023_3070061778734940160_n.png?_nc_cat=106&oh=aec985adc9c85f51d11272cb7632f3c4&oe=5C610DCA",
-                                "buttons": [
-                                    {
-                                        "type": "element_share",
-                                        "share_contents": {
-                                            "attachment": {
-                                                "type": "template",
-                                                "payload": {
-                                                    "template_type": "generic",
-                                                    "elements": [
-                                                        {
-                                                            "title": "It worth visiting",
-                                                            "subtitle": "Hey buddy you should see it",
-                                                            "image_url": "https://bot.peters-hats.com/img/hats/fez.jpg",
-                                                            "default_action": {
-                                                                "type": "web_url",
-                                                                "url": `http://m.me/313826116086030?ref=${ref}`
-                                                            },
-                                                            "buttons": [
-                                                                {
-                                                                    "type": "web_url",
-                                                                    "url": `http://m.me/313826116086030?ref=${ref}`,
-                                                                    "title": `join us your ref is ${ref}`
-                            }
-                          ]
-                        }
-                      ]
-                                                }
-                                            }
-                                        }
-              }
-            ]
-          }
-        ]
-                    }
-                }
-        bot.reply(message, {
-                attachment:attachment
+            httpHandlers.addNewRefToDB(message.user, ref)
+          bot.reply(message, {
+                attachment: answer.shareInviteFriend(ref)
             });
         }
       }
     })
-
-
-    const addNewRefToDB = (id, ref) => {
-
-        let options = {
-            method: 'POST',
-            url: `${process.env.myLink}/receive/add_reference`,
-            headers: {
-                'Cache-Control': 'no-cache',
-                'Content-Type': 'application/json'
-            },
-            body: {
-                id,
-                ref
-            },
-            json: true
-        };
-
-        request(options, function (error, response, body) {
-            if (error) throw new Error(error);
-
-            console.log(body);
-        });
-
-
-    };
-
-    const addUserRefUsedToDB = (ref, id) => {
-
-
-        let options = {
-            method: 'PUT',
-            url: `${process.env.myLink}/receive/add_user_ref_used`,
-            headers: {
-                'Cache-Control': 'no-cache',
-                'Content-Type': 'application/json'
-            },
-            body: {
-                ref,
-                id
-            },
-            json: true
-        };
-
-        request(options, function (error, response, body) {
-            if (error) throw new Error(error);
-
-            console.log(body);
-        });
-    };
-
-     const addNewUserToDB = (first_name, last_name, userID) => {
-
-        let options = {
-            method: 'POST',
-            url: `${process.env.myLink}/receive/add_user`,
-            headers: {
-                'Cache-Control': 'no-cache',
-                'Content-Type': 'application/json'
-            },
-            body: {
-                userID,
-                first_name,
-                last_name
-            },
-            json: true
-        };
-
-        request(options, function (error, response, body) {
-            if (error) throw new Error(error);
-
-            console.log(body);
-        });
-
-
-    };
-
-    const addNewMessageToDB = (sender, recipient, text) => {
-
-        let options = {
-            method: 'POST',
-            url: `${process.env.myLink}/receive/add_message`,
-            headers: {
-                'Cache-Control': 'no-cache',
-                'Content-Type': 'application/json'
-            },
-            body: {
-                sender,
-                recipient,
-                text
-            },
-            json: true
-        };
-
-        request(options, function (error, response, body) {
-            if (error) throw new Error(error);
-
-            console.log(body);
-        });
-
-
-    };
-
 }
 
-
-
- /*const greetNewUser = async (id) => {
-
-        bot.reply(message, "Look up and enjoy!")
-    }*/
-
-/*controller.hears('invite_friend', 'facebook_postback', function(bot, message) {
-       console.log('hahahsha')
-       bot.reply(message, 'Got it!');
-    })
-*/
