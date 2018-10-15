@@ -44,5 +44,8 @@
     "Messenger"
   ],
   "author": "ben@howdy.ai",
-  "license": "ISC"
+  "license": "ISC",
+  "engines": {
+    "node": "10.4.0"
+  }
 }

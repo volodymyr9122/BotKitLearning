@@ -2,21 +2,21 @@
 //import the mongoose module
 const mongoose = require('mongoose');
 //set up default mongoose connection
-const mongoDB =`mongodb://${process.env.dbuser}:${process.env.dbpassword}@ds125693.mlab.com:25693/fbotlearning`;
+const mongoDB = `mongodb://${process.env.dbuser}:${process.env.dbpassword}@ds125693.mlab.com:25693/fbotlearning`;
 
 const mongooseOptions = {
-  useNewUrlParser: true
+    useNewUrlParser: true
 };
-mongoose.connect(mongoDB,mongooseOptions);
+mongoose.connect(mongoDB, mongooseOptions);
 
 // On Connection
 mongoose.connection.on('connected', () => {
-  console.log('Connected to database '+mongoDB);
+    console.log('Connected to database ' + mongoDB);
 });
 
 // On Error
 mongoose.connection.on('error', (err) => {
-  console.log('Database error: '+ err);
+    console.log('Database error: ' + err);
 });
 
 
@@ -26,23 +26,26 @@ var querystring = require('querystring');
 var debug = require('debug')('botkit:webserver');
 
 
-module.exports = function(controller, bot) {
+
+module.exports = function (controller, bot) {
 
 
     var webserver = express();
     webserver.use(bodyParser.json());
-    webserver.use(bodyParser.urlencoded({ extended: true }));
+    webserver.use(bodyParser.urlencoded({
+        extended: true
+    }));
 
     // import express middlewares that are present in /components/express_middleware
     var normalizedPath = require("path").join(__dirname, "express_middleware");
-    require("fs").readdirSync(normalizedPath).forEach(function(file) {
+    require("fs").readdirSync(normalizedPath).forEach(function (file) {
         require("./express_middleware/" + file)(webserver, controller);
     });
 
     webserver.use(express.static('public'));
 
 
-    webserver.listen(process.env.PORT || 8000, null, function() {
+    webserver.listen(process.env.PORT || 8000, null, function () {
 
         debug('Express webserver configured and listening at http://localhost:' + process.env.PORT || 8000);
 
@@ -50,13 +53,13 @@ module.exports = function(controller, bot) {
 
     // import all the pre-defined routes that are present in /components/routes
     var normalizedPath = require("path").join(__dirname, "routes");
-    require("fs").readdirSync(normalizedPath).forEach(function(file) {
-      require("./routes/" + file)(webserver, controller);
+    require("fs").readdirSync(normalizedPath).forEach(function (file) {
+        require("./routes/" + file)(webserver, controller);
     });
+
 
     controller.webserver = webserver;
 
     return webserver;
 
 }
-
