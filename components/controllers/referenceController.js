@@ -1,5 +1,3 @@
- /*Log = require('log'),*/
-     /* log = new Log('info'),*/
  const  Reference = require('../models/reference');
 
 
@@ -23,7 +21,6 @@ console.log(req.body)
 
     reference.save((err) => {
         if (!err) {
-            /*log.info("new reference  link was created");*/
             return res.send(reference);
         } else {
 
@@ -34,7 +31,6 @@ console.log(req.body)
                 res.statusCode = 500;
                 res.send({ error: 'Server error' });
             }
-            /*log.error('Internal error (%d): (%s)', res.statusCode, err.message);*/
 
         }
     });

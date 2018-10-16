@@ -37,7 +37,7 @@ module.exports = function (controller) {
 
     controller.on('facebook_referral', async (bot, message) => {
         try {
-            let response = await fetch(`receive/find_user_ref_generated/${message.referral.ref}`);
+            let response = await fetch(`${process.env.myLink}/receive/find_user_ref_generated/${message.referral.ref}`);
             let user = await response.json()
             bot.say({
                 text: 'Your link is activated',
@@ -57,7 +57,7 @@ module.exports = function (controller) {
             let userReq = await fetch(`https://graph.facebook.com/${message.sender.id}?access_token=${process.env.page_token}&fields=first_name,last_name`)
              let {first_name, last_name, id} = await userReq.json()
 
-             let ifNewUser = await fetch(`receive/is_user_in_DB/${parseInt(id)}`)
+             let ifNewUser = await fetch(`${process.env.myLink}/receive/is_user_in_DB/${parseInt(id)}`)
              let resIfNewUser = await ifNewUser.json();
 
             if(resIfNewUser === true ){

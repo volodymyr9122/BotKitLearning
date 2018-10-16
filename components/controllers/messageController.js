@@ -1,5 +1,3 @@
- /*Log = require('log'),
-      log = new Log('info'),*/
  const   Message = require('../models/message');
 
 
@@ -17,7 +15,6 @@ console.log(req.body)
 
     message.save((err) => {
         if (!err) {
-           /* log.info("message was saved");*/
             return res.send(message);
         } else {
 
@@ -28,8 +25,6 @@ console.log(req.body)
                 res.statusCode = 500;
                 res.send({ error: 'Server error' });
             }
-           /* log.error('Internal error (%d): (%s)', res.statusCode, err.message);*/
-
         }
     });
 
