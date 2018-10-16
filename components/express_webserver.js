@@ -20,17 +20,16 @@ mongoose.connection.on('error', (err) => {
 });
 
 
-var express = require('express');
-var bodyParser = require('body-parser');
-var querystring = require('querystring');
-var debug = require('debug')('botkit:webserver');
-
+const express = require('express');
+const bodyParser = require('body-parser');
+const querystring = require('querystring');
+const debug = require('debug')('botkit:webserver');
 
 
 module.exports = function (controller, bot) {
 
 
-    var webserver = express();
+    const webserver = express();
     webserver.use(bodyParser.json());
     webserver.use(bodyParser.urlencoded({
         extended: true
