@@ -43,7 +43,7 @@ module.exports = function (controller, bot) {
 
     webserver.use(express.static('public'));
 
-
+    const CONCURRENCY = process.env.WEB_CONCURRENCY || 1;
     webserver.listen(process.env.PORT || 8000, null, function () {
 
         debug('Express webserver configured and listening at http://localhost:' + process.env.PORT || 8000);
