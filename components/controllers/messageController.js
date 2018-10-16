@@ -1,6 +1,6 @@
  /*Log = require('log'),
       log = new Log('info'),*/
- const   Message = require('../models/Message');
+ const   Message = require('../models/message');
 
 
 

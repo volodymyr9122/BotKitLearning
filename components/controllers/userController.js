@@ -1,6 +1,6 @@
-const Log = require('log'),
+/* Log = require('log'),*/
    /* log = new Log('info'),*/
-    User = require('../models/User');
+ const  User = require('../models/user');
 
 exports.add_user = ((req, res, next) => {
     console.log(req.body)
