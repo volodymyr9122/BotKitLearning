@@ -25,7 +25,6 @@
     "wordfilter": "^0.2.6"
   },
   "devDependencies": {
-    "eslint": "^5.7.0",
     "log": "^1.4.0",
     "nodemon": "^1.18.4"
   },
@@ -46,6 +45,7 @@
   "author": "ben@howdy.ai",
   "license": "ISC",
   "engines": {
-    "node": "10.4.0"
+    "node": "10.4.0",
+    "npm": "6.4.1"
   }
 }
