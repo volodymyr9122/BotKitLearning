@@ -4,7 +4,6 @@
   "description": "A starter kit for building a custom Facebook Messenger bot with Botkit Studio",
   "main": "bot.js",
   "scripts": {
-    "lint": "eslint ./components --fix",
     "start": "node bot.js",
     "dev": "nodemon bot.js"
   },
