@@ -1,6 +1,6 @@
-const Log = require('log'),
-      log = new Log('info'),
-      Reference = require('../models/Reference');
+ /*Log = require('log'),*/
+     /* log = new Log('info'),*/
+ const  Reference = require('../models/Reference');
 
 
 
@@ -23,7 +23,7 @@ console.log(req.body)
 
     reference.save((err) => {
         if (!err) {
-            log.info("new reference  link was created");
+            /*log.info("new reference  link was created");*/
             return res.send(reference);
         } else {
 
@@ -34,7 +34,7 @@ console.log(req.body)
                 res.statusCode = 500;
                 res.send({ error: 'Server error' });
             }
-            log.error('Internal error (%d): (%s)', res.statusCode, err.message);
+            /*log.error('Internal error (%d): (%s)', res.statusCode, err.message);*/
 
         }
     });
@@ -52,8 +52,8 @@ exports.add_user_ref_used = ((req, res, next) => {
      if(err){
         console.log("Something wrong when updating data!");
      }
-    log.info("refUsed  field was updated");
-    res.send(reference)
+    /*log.info("refUsed  field was updated");*/
+      res.send(reference)
 });
 
 });
@@ -66,7 +66,7 @@ exports.find_user_ref_generated = ((req, res, next) => {
     .exec(function(err, reference) {
     if (err) throw err;
 
-    log.info("SenderID of ref link was found");
+    /*log.info("SenderID of ref link was found");*/
     res.send(reference.id);
 });
 

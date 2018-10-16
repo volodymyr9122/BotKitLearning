@@ -1,5 +1,5 @@
 const Log = require('log'),
-    log = new Log('info'),
+   /* log = new Log('info'),*/
     User = require('../models/User');
 
 exports.add_user = ((req, res, next) => {
@@ -22,7 +22,7 @@ exports.add_user = ((req, res, next) => {
 
             user.save((err) => {
                 if (!err) {
-                    log.info("new user was created");
+                   /* log.info("new user was created");*/
                     return res.send(user);
                 } else {
 
@@ -37,7 +37,7 @@ exports.add_user = ((req, res, next) => {
                             error: 'Server error'
                         });
                     }
-                    log.error('Internal error (%d): (%s)', res.statusCode, err.message);
+                  /*  log.error('Internal error (%d): (%s)', res.statusCode, err.message);*/
 
                 }
             });

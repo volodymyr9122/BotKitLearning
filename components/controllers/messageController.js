@@ -1,6 +1,6 @@
-const Log = require('log'),
-      log = new Log('info'),
-      Message = require('../models/Message');
+ /*Log = require('log'),
+      log = new Log('info'),*/
+ const   Message = require('../models/Message');
 
 
 
@@ -17,7 +17,7 @@ console.log(req.body)
 
     message.save((err) => {
         if (!err) {
-            log.info("message was saved");
+           /* log.info("message was saved");*/
             return res.send(message);
         } else {
 
@@ -28,7 +28,7 @@ console.log(req.body)
                 res.statusCode = 500;
                 res.send({ error: 'Server error' });
             }
-            log.error('Internal error (%d): (%s)', res.statusCode, err.message);
+           /* log.error('Internal error (%d): (%s)', res.statusCode, err.message);*/
 
         }
     });
