@@ -53,6 +53,7 @@ module.exports = function (controller) {
 
     controller.on('facebook_postback', async (bot, message) =>{
         if (message.payload == 'sample_get_started_payload') {
+            console.log(message)
           try{
             let userReq = await fetch(`https://graph.facebook.com/${message.sender.id}?access_token=${process.env.page_token}&fields=first_name,last_name`)
              let {first_name, last_name, id} = await userReq.json()
