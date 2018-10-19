@@ -62,10 +62,6 @@ module.exports = function (controller) {
              let resIfNewUser = await ifNewUser.json();
 
             if(resIfNewUser === true ){
-               /*   bot.say({
-                  text: 'Look up and enjoy.More',
-                  channel: id
-                });*/
                   httpHandlers.addNewUserToDB (first_name, last_name, id);
                  }
                }
@@ -73,6 +69,13 @@ module.exports = function (controller) {
                 console.log(e)
          }
           bot.reply(message, answer.main_menu);
+        }
+        else if(message.payload ==='invite_friend'){
+           let ref =  refRandomGenerator.randomRef()
+            httpHandlers.addNewRefToDB(message.user, ref)
+           bot.reply(message, {
+            attachment: answer.shareInviteFriend(ref)
+            });
         }
     });
 
