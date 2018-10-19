@@ -4,19 +4,19 @@ exports.main_menu = {
         {
             "content_type": "text",
             "title": "My purchases",
-            "payload": "<POSTBACK_PAYLOAD>",
+            "payload": "my_purchases",
             "image_url": "http://example.com/img/red.png"
       },
         {
             "content_type": "text",
             "title": "Shop",
-            "payload": "<POSTBACK_PAYLOAD>",
+            "payload": "shop",
             "image_url": "http://example.com/img/red.png"
       },
         {
             "content_type": "text",
             "title": "Favourites",
-            "payload": "<POSTBACK_PAYLOAD>",
+            "payload": "favourites",
             "image_url": "http://example.com/img/red.png"
       },
         {

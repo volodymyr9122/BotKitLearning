@@ -62,10 +62,10 @@ module.exports = function (controller) {
              let resIfNewUser = await ifNewUser.json();
 
             if(resIfNewUser === true ){
-                  bot.say({
+               /*   bot.say({
                   text: 'Look up and enjoy.More',
                   channel: id
-                });
+                });*/
                   httpHandlers.addNewUserToDB (first_name, last_name, id);
                  }
                }
