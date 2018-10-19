@@ -61,7 +61,7 @@ var webserver = require(__dirname + '/components/express_webserver.js')(controll
 require(__dirname + '/components/subscribe_events.js')(controller);
 
 // Set up Facebook "thread settings" such as get started button, persistent menu
-require(__dirname + '/components/thread_settings.js')(controller);
+//require(__dirname + '/components/thread_settings.js')(controller);
 
 
 // Send an onboarding message when a user activates the bot
