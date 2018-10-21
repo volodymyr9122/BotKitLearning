@@ -86,3 +86,70 @@ exports.shareInviteFriend = (ref) => ({
     }
 })
 
+
+exports.shopCreator=(products) => ({
+
+ "type": "template",
+    "payload": {
+        "template_type": "generic",
+        "image_aspect_ratio": "square",
+        "elements":
+           products.map(product =>({
+            title:product.name,
+            image_url:product.image,
+
+            "buttons":[
+               {
+                "type":"web_url",
+                url:product.url,
+                "title":"Info by product"
+                },{
+                "type":"postback",
+                "title":"Purchases",
+                "payload":"purchase"
+               }
+            ]
+
+
+        }))
+    }
+ })
+
+
+
+
+
+
+
+/*exports.shop = {
+   "payload": {
+  "template_type":"generic",
+  "elements":[
+       {
+      "title":"<TITLE_TEXT>",
+      "image_url":"<IMAGE_URL_TO_DISPLAY>",
+      "subtitle":"<SUBTITLE_TEXT>",
+      "default_action": {
+        "type": "web_url",
+        "url": "<DEFAULT_URL_TO_OPEN>",
+        "messenger_extensions": "false",
+        "webview_height_ratio": "<COMPACT | TALL | FULL>"
+      },
+      "buttons":[
+         {
+                "type":"web_url",
+                "url":"https://petersfancybrownhats.com",
+                "title":"View Details"
+              },{
+                "type":"postback",
+                "title":"Buy",
+                "payload":"DEVELOPER_DEFINED_PAYLOAD"
+              }
+      ]
+    },
+
+    <GENERIC_TEMPLATE>,
+    ...
+  ]
+}
+}*/

@@ -77,9 +77,22 @@ module.exports = function (controller) {
             attachment: answer.shareInviteFriend(ref)
             });
         }
+        else if(message.payload ==='shop'){
+            try{
+                let data = await fetch(`https://api.bestbuy.com/v1/products((categoryPath.id=abcat0204000))?apiKey=${process.env.apiKey}&sort=image.asc&show=image,name,url,thumbnailImage&pageSize=7&format=json`)
+                let response = await data.json()
+               // console.log(response.products)
+                let gallery = answer.shopCreator(response.products)
+                bot.reply(message, {attachment: gallery});
+            }
+            catch(e){
+                console.log(e)
+            }
+
+        }
     });
 
- controller.on('message_received',  (bot, message) => {
+ controller.on('message_received',  async (bot, message) => {
    if (message.quick_reply!==undefined) {
       if (message.quick_reply.payload === 'invite_friend') {
             let ref =  refRandomGenerator.randomRef()
@@ -88,6 +101,22 @@ module.exports = function (controller) {
                 attachment: answer.shareInviteFriend(ref)
             });
         }
+
+        else if(message.quick_reply.payload ==='shop'){
+        try{
+        let data = await
+        fetch(`https://api.bestbuy.com/v1/products((categoryPath.id=abcat0204000))?apiKey=${process.env.apiKey}&sort=image.asc&show=image,name,url,thumbnailImage&pageSize=7&format=json`)
+                let response = await data.json()
+               // console.log(response.products)
+                let gallery = answer.shopCreator(response.products)
+                bot.reply(message, {attachment: gallery});
+            }
+            catch(e){
+                console.log(e)
+            }
+
+        }
+
       }
     })
 }
