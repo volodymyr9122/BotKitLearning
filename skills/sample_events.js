@@ -91,15 +91,27 @@ module.exports = function (controller) {
 
         }
 
-        else if(message.payload ==='buy'){
-           bot.reply(message, answer.buy);
+        else if(message.payload ==='phone'){
+        bot.reply(message, answer.phone);
         }
+
 
     });
 
  controller.on('message_received',  async (bot, message) => {
+
+
    if (message.quick_reply!==undefined) {
-      if (message.quick_reply.payload === 'invite_friend') {
+
+    const re= /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\.0-9]*$/gmi;
+    const phonePayload = message.quick_reply.payload;
+    const match = phonePayload.match(re);
+
+        if(match){
+          bot.reply(message, answer.location);
+        }
+
+       else   if (message.quick_reply.payload === 'invite_friend') {
             let ref =  refRandomGenerator.randomRef()
             httpHandlers.addNewRefToDB(message.user, ref)
           bot.reply(message, {
@@ -121,6 +133,7 @@ module.exports = function (controller) {
             }
 
         }
+
 
       }
     })
