@@ -105,8 +105,8 @@ exports.shopCreator=(products) => ({
                 "title":"Info by product"
                 },{
                 "type":"postback",
-                "title":"Purchases",
-                "payload":"purchase"
+                "title":"Buy",
+                "payload":"buy"
                }
             ]
 
@@ -115,6 +115,17 @@ exports.shopCreator=(products) => ({
     }
  })
 
+exports.buy = {
+    "text": "Please share your  phone & location",
+    "quick_replies": [
+        {
+            "content_type":"location"
+      },
+        {
+            "content_type":"user_phone_number"
+      }
+     ]
+}
 
 
 

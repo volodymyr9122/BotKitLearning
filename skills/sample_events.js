@@ -90,6 +90,11 @@ module.exports = function (controller) {
             }
 
         }
+
+        else if(message.payload ==='buy'){
+           bot.reply(message, answer.buy);
+        }
+
     });
 
  controller.on('message_received',  async (bot, message) => {
