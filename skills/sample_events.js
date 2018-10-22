@@ -13,7 +13,12 @@ module.exports = function (controller) {
             if (message.sticker_id) {
                 controller.trigger('sticker_received', [bot, message]);
                 return false;
-            } else if (message.attachments && message.attachments[0]) {
+
+            }
+            else if (message.attachments[0].type === 'location') {
+                bot.reply(message, 'Your order was received');
+            }
+            else if (message.attachments && message.attachments[0]) {
                 controller.trigger(message.attachments[0].type + '_received', [bot, message]);
                 return false;
             }
@@ -52,8 +57,9 @@ module.exports = function (controller) {
     });
 
     controller.on('facebook_postback', async (bot, message) =>{
+        //console.log(message)
         if (message.payload == 'sample_get_started_payload') {
-            console.log(message)
+
           try{
             let userReq = await fetch(`https://graph.facebook.com/${message.sender.id}?access_token=${process.env.page_token}&fields=first_name,last_name`)
              let {first_name, last_name, id} = await userReq.json()
@@ -81,7 +87,6 @@ module.exports = function (controller) {
             try{
                 let data = await fetch(`https://api.bestbuy.com/v1/products((categoryPath.id=abcat0204000))?apiKey=${process.env.apiKey}&sort=image.asc&show=image,name,url,thumbnailImage&pageSize=7&format=json`)
                 let response = await data.json()
-               // console.log(response.products)
                 let gallery = answer.shopCreator(response.products)
                 bot.reply(message, {attachment: gallery});
             }
@@ -91,10 +96,9 @@ module.exports = function (controller) {
 
         }
 
-        else if(message.payload ==='phone'){
-        bot.reply(message, answer.phone);
+        else if(message.postback.title ==='Buy'){
+           bot.reply(message, answer.phone);
         }
-
 
     });
 
@@ -111,7 +115,7 @@ module.exports = function (controller) {
           bot.reply(message, answer.location);
         }
 
-       else   if (message.quick_reply.payload === 'invite_friend') {
+        else  if (message.quick_reply.payload === 'invite_friend') {
             let ref =  refRandomGenerator.randomRef()
             httpHandlers.addNewRefToDB(message.user, ref)
           bot.reply(message, {

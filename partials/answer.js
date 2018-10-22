@@ -106,7 +106,7 @@ exports.shopCreator=(products) => ({
                 },{
                 "type":"postback",
                 "title":"Buy",
-                "payload":"phone"
+                "payload":`${product.name} ` /*"phone"*/
                }
             ]
 
