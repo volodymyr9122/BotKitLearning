@@ -57,3 +57,39 @@ exports.is_user_in_DB = ((req, res, next) => {
         })
 
 })
+
+
+exports.is_userPhone_in_DB = ((req, res, next) => {
+    User.findOne({userID: req.params.userID})
+        .exec(function (err, userAvaible) {
+            if (err) throw err;
+            else if(!userAvaible){
+                res.send("you are not added to user DB")
+            }
+            else if (userAvaible.phone) {
+                res.send(true)
+            } else {
+                res.send(false)
+            }
+        })
+
+})
+
+
+//Update  phone field in user
+exports.add_user_phone = ((req, res, next) => {
+
+  User.findOneAndUpdate({userID:req.body.userID}, {phone:req.body.phone}, {new: true},
+    function(err, user){
+     if(err){
+        if (err) throw err;
+        return;
+     }
+
+      res.send(user)
+});
+
+});
+
+
+

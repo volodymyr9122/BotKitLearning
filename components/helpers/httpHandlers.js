@@ -101,3 +101,81 @@ exports.addNewMessageToDB = (sender, recipient, text) => {
 
     }
 };
+
+
+////////////////
+exports.addUserProduct = (userID, product) => {
+
+    let options = {
+        method: 'PUT',
+        url: `${process.env.myLink}/receive/add_product`,
+        headers: {
+            'Cache-Control': 'no-cache',
+            'Content-Type': 'application/json'
+        },
+        body: {
+            userID,
+            product
+        },
+        json: true
+    };
+
+    request(options, function (error, response, body) {
+        if (error) throw new Error(error);
+
+        console.log(body);
+    });
+
+
+};
+
+exports.addUserCoordinates = (userID, coordinates) => {
+
+    let options = {
+        method: 'PUT',
+        url: `${process.env.myLink}/receive/add_coordinates`,
+        headers: {
+            'Cache-Control': 'no-cache',
+            'Content-Type': 'application/json'
+        },
+        body: {
+            userID,
+            coordinates
+        },
+        json: true
+    };
+
+    request(options, function (error, response, body) {
+        if (error) throw new Error(error);
+
+        console.log(body);
+    });
+
+
+};
+
+exports.addUserPhone = (userID, phone) => {
+
+    let options = {
+        method: 'PUT',
+        url: `${process.env.myLink}/receive/add_user_phone`,
+        headers: {
+            'Cache-Control': 'no-cache',
+            'Content-Type': 'application/json'
+        },
+        body: {
+            userID,
+            phone
+        },
+        json: true
+    };
+
+    request(options, function (error, response, body) {
+        if (error) throw new Error(error);
+
+        console.log(body);
+    });
+
+
+};
+

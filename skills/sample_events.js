@@ -16,6 +16,8 @@ module.exports = function (controller) {
 
             }
             else if (message.attachments[0].type === 'location') {
+                //console.log(message.attachments[0].payload.coordinates)
+            httpHandlers.addUserCoordinates (message.sender.id, message.attachments[0].payload.coordinates);
                 bot.reply(message, 'Your order was received');
             }
             else if (message.attachments && message.attachments[0]) {
@@ -97,7 +99,30 @@ module.exports = function (controller) {
         }
 
         else if(message.postback.title ==='Buy'){
-           bot.reply(message, answer.phone);
+//console.log(message.postback.payload)
+//console.log(message.sender.id)
+           httpHandlers.addUserProduct (message.sender.id, message.postback.payload);
+
+           try{
+            let ifUserPhone = await fetch(`${process.env.myLink}/receive/is_userPhone_in_DB/${parseInt(message.sender.id)}`)
+            let resIfUserPhone = await ifUserPhone.json();
+                 //console.log(resIfUserPhone)
+            if(resIfUserPhone === true ){
+                //console.log('exist')
+                 bot.reply(message, answer.location);
+                 // httpHandlers.addUserCoordinates(message.sender.id, last_name, id);
+                 }
+               else{
+                    //console.log('none')
+                    bot.reply(message, answer.phone);
+               }
+           }
+            catch(e){
+                console.log(e)
+           }
+
+
+           // bot.reply(message, answer.phone);
         }
 
     });
@@ -112,6 +137,8 @@ module.exports = function (controller) {
     const match = phonePayload.match(re);
 
         if(match){
+          httpHandlers.addUserPhone(message.sender.id, phonePayload)
+
           bot.reply(message, answer.location);
         }
 
