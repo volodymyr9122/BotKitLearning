@@ -105,7 +105,7 @@ exports.addNewMessageToDB = (sender, recipient, text) => {
 
 ////////////////
 exports.addUserProduct = (userID, product) => {
-
+    console.log('addUserProduct product is '+product)
     let options = {
         method: 'PUT',
         url: `${process.env.myLink}/receive/add_product`,
@@ -178,4 +178,15 @@ exports.addUserPhone = (userID, phone) => {
 
 
 };
+/*, image_url, salePrice*/
+/*console.log('addUserProduct user id'+userID)
+console.log('addUserProduct product'+product)
+console.log('addUserProduct product valueOf is   '+product.valueOf())
+console.log('addUserProduct product toString is   '+product.toString())*/
 
+
+/*:{
+                product:name,
+                image_url,
+                salePrice
+            }*/

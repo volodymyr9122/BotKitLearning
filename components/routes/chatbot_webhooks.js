@@ -1,7 +1,8 @@
 const reference_controller = require('../controllers/referenceController'),
       user_controller = require('../controllers/userController'),
       message_controller = require('../controllers/messageController'),
-      order_controller = require('../controllers/orderController');
+      order_controller = require('../controllers/orderController'),
+      purchase_controller = require('../controllers/purchaseController');
 
 module.exports = function(webserver, controller) {
 
@@ -21,4 +22,7 @@ webserver.post('/receive/add_message', message_controller.add_message);
 //  routes used for order schema
 webserver.put('/receive/add_product', order_controller.add_product);
 webserver.put('/receive/add_coordinates', order_controller.add_coordinates);
+//  routes used for purchase schema
+webserver.get('/receive/get_purchases/:userID', purchase_controller.get_purchases);
+webserver.get('/receive/get_single_purchase/:userID/:orderDate', purchase_controller.get_single_purchase);
 }

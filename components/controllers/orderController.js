@@ -1,9 +1,32 @@
 const  User = require('../models/user');
 
-exports.add_product = ((req, res, next) => {
+const newDate = function(date){
+    let tmpDate = new Date(date);
+    return tmpDate.getFullYear() + "-" +
+           tmpDate.getMonth()+ "-" +
+           tmpDate.getDate() + "-" +
+           tmpDate.getHours() + "'" +
+           tmpDate.getMinutes()
+};
 
+
+
+
+
+
+exports.add_product = ((req, res, next) => {
+/*console.log('Req body product'+req.body.product+'goes here')
+console.log('Req body product name'+req.body.product.name+'goes here')
+console.log('Req body product salePrice'+req.body.product.salePrice+'goes here')
+console.log('Req body product image'+req.body.product.image+'goes here')*/
 User.findOne({userID: req.body.userID}).then((record)=>{
-    record.orders.push({product:req.body.product, isOrderReceived:false })
+    record.orders.push({
+        name:req.body.product.name,
+        isOrderReceived:false,
+        image:req.body.product.image,
+        salePrice: req.body.product.salePrice,
+        orderDate: newDate(Date.now()).trim()
+    })
     record.save((err) => {
                 if (!err) {
                     return res.send(record);
@@ -60,4 +83,4 @@ exports.add_coordinates = ((req, res, next) => {
    })
 
 })
- //console.log(order)
+

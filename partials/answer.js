@@ -13,12 +13,12 @@ exports.main_menu = {
             "payload": "shop",
             "image_url": "http://example.com/img/red.png"
       },
-        {
+        /*{
             "content_type": "text",
             "title": "Favourites",
             "payload": "favourites",
             "image_url": "http://example.com/img/red.png"
-      },
+      },*/
         {
             "content_type": "text",
             "title": "To invite a friend",
@@ -87,34 +87,41 @@ exports.shareInviteFriend = (ref) => ({
 })
 
 
-exports.shopCreator=(products) => ({
+exports.shopCreator = function (products) {
 
+return {
  "type": "template",
     "payload": {
         "template_type": "generic",
         "image_aspect_ratio": "square",
         "elements":
-           products.map(product =>({
+           products.map(function(product) {
+
+            return{
+
             title:product.name,
             image_url:product.image,
-
+            subtitle:product.salePrice,
             "buttons":[
                {
                 "type":"web_url",
                 url:product.url,
                 "title":"Info by product"
-                },{
+                },
+                {
                 "type":"postback",
                 "title":"Buy",
-                "payload":`${product.name} ` /*"phone"*/
+                "payload": JSON.stringify(product)
                }
             ]
+            }
+
+        })
+    }}
+}
 
 
-        }))
-    }
- })
-
+///
 exports.phone = {
     "text": "Please share your  phone",
     "payload":"location",
@@ -134,40 +141,103 @@ exports.location = {
      ]
 }
 
+//////////////
+
+exports.purchasesCreator = (products) => ({
+    "type": "template",
+      "payload": {
+        "template_type": "list",
+        "top_element_style": "compact",
+        "elements":
+           products.map(product =>({
+
+               title:product.name,
+               subtitle: `Date: ${product.orderDate}  \n
+                          Price: ${product.salePrice}`,
+
+            "buttons":[
+              {
+                "type":"postback",
+                "title":"Show",
+                "payload":`${product.orderDate} `
+               }
+            ]
+
+           })),
+
+
+         "buttons": [
+          {
+            "title": "Return to main menu",
+            "type": "postback",
+            "payload": "sample_get_started_payload"
+          }
+        ]
+      }
+
+})
 
 
 
 
+////
+exports.singlePurchasedCreator = (product) => ({
 
-/*exports.shop = {
-   "payload": {
-  "template_type":"generic",
-  "elements":[
-       {
-      "title":"<TITLE_TEXT>",
-      "image_url":"<IMAGE_URL_TO_DISPLAY>",
-      "subtitle":"<SUBTITLE_TEXT>",
-      "default_action": {
-        "type": "web_url",
-        "url": "<DEFAULT_URL_TO_OPEN>",
-        "messenger_extensions": "false",
-        "webview_height_ratio": "<COMPACT | TALL | FULL>"
-      },
-      "buttons":[
-         {
+ "type": "template",
+    "payload": {
+        "template_type": "generic",
+        "image_aspect_ratio": "square",
+        "elements":[
+           ({
+            title:product[0].name,
+            image_url:product[0].image,
+            subtitle:product[0].salePrice,
+
+            "buttons":[
+            {
+            "type":"postback",
+            "title":"Buy",
+            "payload": JSON.stringify(product[0])
+            },
+            {
+            "title": "Return to My Purchases",
+            "type": "postback",
+            "payload": "my_purchases"
+             }
+            ],
+
+
+        })]
+
+    }
+ })
+
+/*exports.shopCreator=(products) => ({
+
+ "type": "template",
+    "payload": {
+        "template_type": "generic",
+        "image_aspect_ratio": "square",
+        "elements":
+           products.map(product =>({
+            title:product.name,
+            image_url:product.image,
+            subtitle:product.salePrice,
+
+            "buttons":[
+               {
                 "type":"web_url",
-                "url":"https://petersfancybrownhats.com",
-                "title":"View Details"
-              },{
+                url:product.url,
+                "title":"Info by product"
+                },
+                {
                 "type":"postback",
                 "title":"Buy",
-                "payload":"DEVELOPER_DEFINED_PAYLOAD"
-              }
-      ]
-    },
+                "payload": JSON.stringify(product)
+               }
+            ]
 
-    <GENERIC_TEMPLATE>,
-    ...
-  ]
-}
-}*/
+
+        }))
+    }
+ })*/

@@ -59,7 +59,7 @@ module.exports = function (controller) {
     });
 
     controller.on('facebook_postback', async (bot, message) =>{
-        //console.log(message)
+
         if (message.payload == 'sample_get_started_payload') {
 
           try{
@@ -87,8 +87,9 @@ module.exports = function (controller) {
         }
         else if(message.payload ==='shop'){
             try{
-                let data = await fetch(`https://api.bestbuy.com/v1/products((categoryPath.id=abcat0204000))?apiKey=${process.env.apiKey}&sort=image.asc&show=image,name,url,thumbnailImage&pageSize=7&format=json`)
+                let data = await fetch(`https://api.bestbuy.com/v1/products((categoryPath.id=abcat0204000))?apiKey=${process.env.apiKey}&sort=image.asc&show=image,name,url,thumbnailImage,salePrice&pageSize=7&format=json`)
                 let response = await data.json()
+                //console.log(response.products)
                 let gallery = answer.shopCreator(response.products)
                 bot.reply(message, {attachment: gallery});
             }
@@ -99,31 +100,68 @@ module.exports = function (controller) {
         }
 
         else if(message.postback.title ==='Buy'){
-//console.log(message.postback.payload)
-//console.log(message.sender.id)
-           httpHandlers.addUserProduct (message.sender.id, message.postback.payload);
-
-           try{
+console.log('Products before Json parse are'+message.postback.payload+'here')
+       let products = JSON.parse(message.postback.payload);
+        console.log('Products after Json parse are'+products+'here')
+       httpHandlers.addUserProduct (message.sender.id, products);
+        try{
             let ifUserPhone = await fetch(`${process.env.myLink}/receive/is_userPhone_in_DB/${parseInt(message.sender.id)}`)
             let resIfUserPhone = await ifUserPhone.json();
-                 //console.log(resIfUserPhone)
+
             if(resIfUserPhone === true ){
-                //console.log('exist')
-                 bot.reply(message, answer.location);
-                 // httpHandlers.addUserCoordinates(message.sender.id, last_name, id);
-                 }
+                bot.reply(message, answer.location);
+                }
                else{
-                    //console.log('none')
-                    bot.reply(message, answer.phone);
+                  bot.reply(message, answer.phone);
                }
            }
             catch(e){
                 console.log(e)
            }
-
-
-           // bot.reply(message, answer.phone);
         }
+
+
+
+        else if(message.postback.title ==='Show'){
+            try{
+let response = await fetch(`${process.env.myLink}/receive/get_single_purchase/${parseInt(message.sender.id)}/${encodeURIComponent(message.postback.payload)}`)
+let currentMyPurchase = await response.json()
+//console.log(currentMyPurchase)
+//console.log(typeof currentMyPurchase)
+     let oneItemGallery = answer.singlePurchasedCreator(currentMyPurchase)
+     //console.log(oneItemGallery.payload.elements[0])
+                bot.reply(message, {attachment: oneItemGallery});
+
+            } catch(e){
+                console.log(e)
+           }
+           // bot.reply(message,'you show''message postback payload is'+message.postback.payload);
+        }
+
+        else if(message.postback.payload ==='my_purchases'){
+     try{
+        let data = await
+        fetch(`${process.env.myLink}/receive/get_purchases/${message.user}`);
+        let response = await data.json()
+
+            let keyVal =  Object.keys(response)
+
+            if(keyVal[0]==='message'){
+               bot.reply(message, response.message);
+            }
+               else{
+                   let purchases = answer.purchasesCreator(response)
+                bot.reply(message, {attachment: purchases});
+               }
+
+            }
+            catch(e){
+                console.log(e)
+            }
+
+        }
+
+
 
     });
 
@@ -153,7 +191,7 @@ module.exports = function (controller) {
         else if(message.quick_reply.payload ==='shop'){
         try{
         let data = await
-        fetch(`https://api.bestbuy.com/v1/products((categoryPath.id=abcat0204000))?apiKey=${process.env.apiKey}&sort=image.asc&show=image,name,url,thumbnailImage&pageSize=7&format=json`)
+        fetch(`https://api.bestbuy.com/v1/products((categoryPath.id=abcat0204000))?apiKey=${process.env.apiKey}&sort=image.asc&show=image,name,url,thumbnailImage,salePrice&pageSize=7&format=json`)
                 let response = await data.json()
                // console.log(response.products)
                 let gallery = answer.shopCreator(response.products)
@@ -166,7 +204,36 @@ module.exports = function (controller) {
         }
 
 
+
+       else if(message.quick_reply.payload ==='my_purchases'){
+             try{
+        let data = await
+        fetch(`${process.env.myLink}/receive/get_purchases/${message.user}`);
+        let response = await data.json()
+
+            let keyVal =  Object.keys(response)
+
+            if(keyVal[0]==='message'){
+               bot.reply(message, response.message);
+            }
+               else{
+                   let purchases = answer.purchasesCreator(response)
+                bot.reply(message, {attachment: purchases});
+               }
+
+            }
+            catch(e){
+                console.log(e)
+            }
+    }
+
+
+
       }
     })
 }
 
+ /*   console.log(keyVal[0])
+  console.log(response)
+ console.log(typeof response)
+        console.log(Object.values(response))*/

@@ -3,13 +3,15 @@ const Schema = mongoose.Schema;
 
 
 const OrderSchema = new Schema({
-  product:{type:String},
+  name:{type:String},
+  image:{type:String},
+  salePrice:{type:Number},
   coordinates:
  {
    lat:Number,
    long:Number
    },
- orderDate:{type:Date, default:Date.now },
+ orderDate:{type:String},/*, default:Date.now*/
  isOrderReceived:{type:Boolean}
 });
 
@@ -21,8 +23,6 @@ const UserSchema = new Schema({
   orders:[OrderSchema]
 });
 
-// Apply the uniqueValidator plugin to ReferenceSchema
-//UserSchema.plugin(uniqueValidator);
 
 //Initializing model
 const User = mongoose.model('User', UserSchema,'Users');
