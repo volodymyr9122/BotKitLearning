@@ -183,7 +183,7 @@ let currentMyPurchase = await response.json()
         }
 
        if(match && phonePayload.length===1){
-        if(message.quick_reply.payload === '9' || message.quick_reply.payload === '10'){
+        if(message.quick_reply.payload === '8' || message.quick_reply.payload === '9' || message.quick_reply.payload === '10'){
            let ref =  refRandomGenerator.randomRef()
             httpHandlers.addNewRefToDB(message.user, ref)
             bot.reply(message, {

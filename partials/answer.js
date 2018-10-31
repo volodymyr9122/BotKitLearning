@@ -214,7 +214,7 @@ exports.singlePurchasedCreator = (product) => ({
 
 
 exports.nps_rating = {
-    "text": "Would you recomend our bot to yuor friends",
+    "text": "Would you recommend our bot to your friends ?",
     "quick_replies": [
         {
             "content_type": "text",
