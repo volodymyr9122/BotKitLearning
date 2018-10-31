@@ -178,6 +178,37 @@ exports.addUserPhone = (userID, phone) => {
 
 
 };
+
+
+//send NPS result
+exports.sendNPSresult= (userID, rate) => {
+     let options = {
+        method: 'POST',
+        url: `${process.env.myLink}/receive/send_nps_result`,
+        headers: {
+            'Cache-Control': 'no-cache',
+            'Content-Type': 'application/json'
+        },
+        body: {
+            userID,
+            rate
+        },
+        json: true
+    };
+
+    request(options, function (error, response, body) {
+        if (error) throw new Error(error);
+
+        console.log(body);
+    });
+
+}
+
+
+
+
+
+
 /*, image_url, salePrice*/
 /*console.log('addUserProduct user id'+userID)
 console.log('addUserProduct product'+product)

@@ -13,12 +13,12 @@ exports.main_menu = {
             "payload": "shop",
             "image_url": "http://example.com/img/red.png"
       },
-        /*{
+        {
             "content_type": "text",
-            "title": "Favourites",
-            "payload": "favourites",
+            "title": "NPS",
+            "payload": "nps",
             "image_url": "http://example.com/img/red.png"
-      },*/
+      },
         {
             "content_type": "text",
             "title": "To invite a friend",
@@ -211,6 +211,64 @@ exports.singlePurchasedCreator = (product) => ({
 
     }
  })
+
+
+exports.nps_rating = {
+    "text": "Would you recomend our bot to yuor friends",
+    "quick_replies": [
+        {
+            "content_type": "text",
+            "title": "1",
+            "payload": "1"
+        },
+        {
+            "content_type": "text",
+            "title": "2",
+            "payload": "2"
+        },
+        {
+            "content_type": "text",
+            "title": "3",
+            "payload": "3"
+        },
+        {
+            "content_type": "text",
+            "title": "4",
+            "payload": "4"
+        },
+        {
+            "content_type": "text",
+            "title": "5",
+            "payload": "5"
+        },
+        {
+            "content_type": "text",
+            "title": "6",
+            "payload": "6"
+        },
+        {
+            "content_type": "text",
+            "title": "7",
+            "payload": "7"
+        },
+        {
+            "content_type": "text",
+            "title": "8",
+            "payload": "8"
+        },
+        {
+            "content_type": "text",
+            "title": "9",
+            "payload": "9"
+        },
+        {
+            "content_type": "text",
+            "title": "10",
+            "payload": "10"
+        },
+     ]
+}
+
 
 /*exports.shopCreator=(products) => ({
 

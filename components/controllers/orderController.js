@@ -1,4 +1,5 @@
-const  User = require('../models/user');
+const  User = require('../models/user'),
+       timeTransition = require('../helpers/timeTransition');
 
 const newDate = function(date){
     let tmpDate = new Date(date);
@@ -15,10 +16,6 @@ const newDate = function(date){
 
 
 exports.add_product = ((req, res, next) => {
-/*console.log('Req body product'+req.body.product+'goes here')
-console.log('Req body product name'+req.body.product.name+'goes here')
-console.log('Req body product salePrice'+req.body.product.salePrice+'goes here')
-console.log('Req body product image'+req.body.product.image+'goes here')*/
 User.findOne({userID: req.body.userID}).then((record)=>{
     record.orders.push({
         name:req.body.product.name,
@@ -83,4 +80,11 @@ exports.add_coordinates = ((req, res, next) => {
    })
 
 })
+
+
+
+/*console.log('Req body product'+req.body.product+'goes here')
+console.log('Req body product name'+req.body.product.name+'goes here')
+console.log('Req body product salePrice'+req.body.product.salePrice+'goes here')
+console.log('Req body product image'+req.body.product.image+'goes here')*/
 

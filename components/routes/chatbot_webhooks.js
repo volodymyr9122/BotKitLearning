@@ -2,7 +2,8 @@ const reference_controller = require('../controllers/referenceController'),
       user_controller = require('../controllers/userController'),
       message_controller = require('../controllers/messageController'),
       order_controller = require('../controllers/orderController'),
-      purchase_controller = require('../controllers/purchaseController');
+      purchase_controller = require('../controllers/purchaseController'),
+      nps_controller = require('../controllers/npsCotroller');
 
 module.exports = function(webserver, controller) {
 
@@ -25,4 +26,6 @@ webserver.put('/receive/add_coordinates', order_controller.add_coordinates);
 //  routes used for purchase schema
 webserver.get('/receive/get_purchases/:userID', purchase_controller.get_purchases);
 webserver.get('/receive/get_single_purchase/:userID/:orderDate', purchase_controller.get_single_purchase);
+// routes used for NPS
+webserver.post('/receive/send_nps_result', nps_controller.send_nps_result);
 }

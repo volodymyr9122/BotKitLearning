@@ -17,6 +17,8 @@ module.exports = function (controller) {
             }
             else if (message.attachments[0].type === 'location') {
                 //console.log(message.attachments[0].payload.coordinates)
+
+
             httpHandlers.addUserCoordinates (message.sender.id, message.attachments[0].payload.coordinates);
                 bot.reply(message, 'Your order was received');
             }
@@ -100,9 +102,9 @@ module.exports = function (controller) {
         }
 
         else if(message.postback.title ==='Buy'){
-console.log('Products before Json parse are'+message.postback.payload+'here')
+//console.log('Products before Json parse are'+message.postback.payload+'here')
        let products = JSON.parse(message.postback.payload);
-        console.log('Products after Json parse are'+products+'here')
+        //console.log('Products after Json parse are'+products+'here')
        httpHandlers.addUserProduct (message.sender.id, products);
         try{
             let ifUserPhone = await fetch(`${process.env.myLink}/receive/is_userPhone_in_DB/${parseInt(message.sender.id)}`)
@@ -171,13 +173,28 @@ let currentMyPurchase = await response.json()
    if (message.quick_reply!==undefined) {
 
     const re= /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\.0-9]*$/gmi;
+
     const phonePayload = message.quick_reply.payload;
     const match = phonePayload.match(re);
 
-        if(match){
+        if(match && phonePayload.length>2){
           httpHandlers.addUserPhone(message.sender.id, phonePayload)
-
           bot.reply(message, answer.location);
+        }
+
+       if(match && phonePayload.length===1){
+        if(message.quick_reply.payload === '9' || message.quick_reply.payload === '10'){
+           let ref =  refRandomGenerator.randomRef()
+            httpHandlers.addNewRefToDB(message.user, ref)
+            bot.reply(message, {
+                attachment: answer.shareInviteFriend(ref)
+            });
+
+        }
+           else{
+          httpHandlers.sendNPSresult(message.sender.id, message.quick_reply.payload)
+          bot.reply(message, 'Thank you. We will be better');
+           }
         }
 
         else  if (message.quick_reply.payload === 'invite_friend') {
@@ -186,6 +203,10 @@ let currentMyPurchase = await response.json()
           bot.reply(message, {
                 attachment: answer.shareInviteFriend(ref)
             });
+        }
+
+        else  if (message.quick_reply.payload === 'nps') {
+           bot.reply(message, answer.nps_rating)
         }
 
         else if(message.quick_reply.payload ==='shop'){

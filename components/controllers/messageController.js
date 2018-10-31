@@ -4,7 +4,7 @@
 
 // Add message
 exports.add_message = ((req, res, next) => {
-console.log(req.body)
+//console.log(req.body)
 
     let message = new Message({
         sender: req.body.sender,
