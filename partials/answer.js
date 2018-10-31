@@ -121,7 +121,7 @@ return {
 }
 
 
-///
+
 exports.phone = {
     "text": "Please share your  phone",
     "payload":"location",
@@ -141,7 +141,7 @@ exports.location = {
      ]
 }
 
-//////////////
+
 
 exports.purchasesCreator = (products) => ({
     "type": "template",

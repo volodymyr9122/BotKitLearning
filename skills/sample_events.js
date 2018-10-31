@@ -16,7 +16,6 @@ module.exports = function (controller) {
 
             }
             else if (message.attachments[0].type === 'location') {
-                //console.log(message.attachments[0].payload.coordinates)
 
 
             httpHandlers.addUserCoordinates (message.sender.id, message.attachments[0].payload.coordinates);
@@ -91,7 +90,7 @@ module.exports = function (controller) {
             try{
                 let data = await fetch(`https://api.bestbuy.com/v1/products((categoryPath.id=abcat0204000))?apiKey=${process.env.apiKey}&sort=image.asc&show=image,name,url,thumbnailImage,salePrice&pageSize=7&format=json`)
                 let response = await data.json()
-                //console.log(response.products)
+
                 let gallery = answer.shopCreator(response.products)
                 bot.reply(message, {attachment: gallery});
             }
@@ -102,10 +101,8 @@ module.exports = function (controller) {
         }
 
         else if(message.postback.title ==='Buy'){
-//console.log('Products before Json parse are'+message.postback.payload+'here')
-       let products = JSON.parse(message.postback.payload);
-        //console.log('Products after Json parse are'+products+'here')
-       httpHandlers.addUserProduct (message.sender.id, products);
+        let products = JSON.parse(message.postback.payload);
+        httpHandlers.addUserProduct (message.sender.id, products);
         try{
             let ifUserPhone = await fetch(`${process.env.myLink}/receive/is_userPhone_in_DB/${parseInt(message.sender.id)}`)
             let resIfUserPhone = await ifUserPhone.json();
@@ -128,16 +125,12 @@ module.exports = function (controller) {
             try{
 let response = await fetch(`${process.env.myLink}/receive/get_single_purchase/${parseInt(message.sender.id)}/${encodeURIComponent(message.postback.payload)}`)
 let currentMyPurchase = await response.json()
-//console.log(currentMyPurchase)
-//console.log(typeof currentMyPurchase)
      let oneItemGallery = answer.singlePurchasedCreator(currentMyPurchase)
-     //console.log(oneItemGallery.payload.elements[0])
                 bot.reply(message, {attachment: oneItemGallery});
 
             } catch(e){
                 console.log(e)
            }
-           // bot.reply(message,'you show''message postback payload is'+message.postback.payload);
         }
 
         else if(message.postback.payload ==='my_purchases'){
@@ -214,7 +207,6 @@ let currentMyPurchase = await response.json()
         let data = await
         fetch(`https://api.bestbuy.com/v1/products((categoryPath.id=abcat0204000))?apiKey=${process.env.apiKey}&sort=image.asc&show=image,name,url,thumbnailImage,salePrice&pageSize=7&format=json`)
                 let response = await data.json()
-               // console.log(response.products)
                 let gallery = answer.shopCreator(response.products)
                 bot.reply(message, {attachment: gallery});
             }
@@ -254,7 +246,3 @@ let currentMyPurchase = await response.json()
     })
 }
 
- /*   console.log(keyVal[0])
-  console.log(response)
- console.log(typeof response)
-        console.log(Object.values(response))*/

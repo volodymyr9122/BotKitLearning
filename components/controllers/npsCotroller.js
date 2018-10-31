@@ -3,7 +3,6 @@ const   NPS = require('../models/nps')
 
 // Add nps question
 exports.send_nps_result = ((req, res, next) => {
-console.log(req.body)
 
  NPS.countDocuments({
         userID: req.body.userID

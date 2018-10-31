@@ -1,7 +1,6 @@
  const  User = require('../models/user');
 
 exports.add_user = ((req, res, next) => {
-    //console.log(req.body)
 
     User.countDocuments({
         userID: req.body.userID

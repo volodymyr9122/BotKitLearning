@@ -37,8 +37,3 @@ exports.get_single_purchase = ((req, res, next) => {
              res.send(result)
     })
 })
-
-/* .filter((order)=>console.log(typeof JSON.stringify(order.orderDate))===console.log(typeof JSON.stringify(a)))*/
-/*req.params.orderDate*/
-//console.log(record.orders.length)
- /* console.log('order.orderDate '+typeof order.orderDate),console.log('req.params.orderDate '+typeof req.params.orderDate)*/

@@ -11,10 +11,6 @@ const newDate = function(date){
 };
 
 
-
-
-
-
 exports.add_product = ((req, res, next) => {
 User.findOne({userID: req.body.userID}).then((record)=>{
     record.orders.push({
@@ -80,11 +76,4 @@ exports.add_coordinates = ((req, res, next) => {
    })
 
 })
-
-
-
-/*console.log('Req body product'+req.body.product+'goes here')
-console.log('Req body product name'+req.body.product.name+'goes here')
-console.log('Req body product salePrice'+req.body.product.salePrice+'goes here')
-console.log('Req body product image'+req.body.product.image+'goes here')*/
 
