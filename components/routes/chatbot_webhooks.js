@@ -3,7 +3,8 @@ const reference_controller = require('../controllers/referenceController'),
       message_controller = require('../controllers/messageController'),
       order_controller = require('../controllers/orderController'),
       purchase_controller = require('../controllers/purchaseController'),
-      nps_controller = require('../controllers/npsCotroller');
+      nps_controller = require('../controllers/npsCotroller'),
+      nps_controller_API = require('../controllers/npsCotrollerAPI');
 
 module.exports = function(webserver, controller) {
 
@@ -28,4 +29,6 @@ webserver.get('/receive/get_purchases/:userID', purchase_controller.get_purchase
 webserver.get('/receive/get_single_purchase/:userID/:orderDate', purchase_controller.get_single_purchase);
 // routes used for NPS
 webserver.post('/receive/send_nps_result', nps_controller.send_nps_result);
+// routes used for NPS PostMan API
+webserver.post('/receive/send_nps_questin_API', nps_controller_API.send_nps_questin_API);
 }

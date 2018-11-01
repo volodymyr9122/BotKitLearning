@@ -1,5 +1,5 @@
-const   NPS = require('../models/nps')
-        timeTransition = require('../helpers/timeTransition');
+const   NPS = require('../models/nps'),
+        User = require('../models/user');
 
 // Add nps question
 exports.send_nps_result = ((req, res, next) => {
@@ -41,3 +41,4 @@ exports.send_nps_result = ((req, res, next) => {
 
 });
 });
+

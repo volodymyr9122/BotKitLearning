@@ -205,3 +205,27 @@ exports.sendNPSresult= (userID, rate) => {
 }
 
 
+//send NPS question API
+exports.sendNPSquestinAPI= (userID) => {
+     let options = {
+        method: 'POST',
+        url: `${process.env.myLink}/receive/send_nps_questin_API`,
+        headers: {
+            'Cache-Control': 'no-cache',
+            'Content-Type': 'application/json'
+        },
+        body: {
+            userID
+        },
+        json: true
+    };
+
+    request(options, function (error, response, body) {
+        if (error) throw new Error(error);
+
+        console.log(body);
+    });
+
+}
+
+
