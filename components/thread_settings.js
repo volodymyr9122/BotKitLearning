@@ -2,7 +2,6 @@
 var debug = require('debug')('botkit:thread_settings');
 
 
-
 module.exports = function(controller) {
 
     debug('Configuring Facebook thread settings...');
